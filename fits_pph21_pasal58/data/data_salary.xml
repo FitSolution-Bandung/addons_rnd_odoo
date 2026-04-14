@@ -11,17 +11,9 @@
             <field name="code">GrossPph</field>
         </record>
         
-        <record id="SALARY_TYPE_NEW_PPH" model="hr.payroll.structure.type">
-            <field name="name">SALARY PPH</field>
-        </record>
-
         <record id="SALARY_STRUCTURE_NEW_PPH" model="hr.payroll.structure">
             <field name="name">Salary Structure New PPH</field>
-            <field name="type_id" ref="SALARY_TYPE_NEW_PPH"/>
-        </record>
-
-        <record id="SALARY_TYPE_NEW_PPH" model="hr.payroll.structure.type">
-            <field name="default_struct_id" ref="SALARY_STRUCTURE_NEW_PPH"/>
+            <field name="code">SALARY_STRUCTURE_NEW_PPH</field>
         </record>
 
         <!--TOTAL PENDAPATAN BRUTO Sebelum Pph-->
