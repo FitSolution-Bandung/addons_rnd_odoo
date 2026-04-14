@@ -33,16 +33,12 @@ class HRPayslip(models.Model):
             date_end = (end_date + relativedelta(months=+12, day=1, days=-1)).strftime('%Y-%m-%d')
 
             # Delete existing hr.payslip.line.bruto.pph records if is_tahunan is False
-
-
             payslip_filter = self.env['hr.payslip'].search(
                 [('employee_id', '=', payslip.employee_id.id),('state', '=', 'done'),('date_from', '>=', start_date),
                  ('date_from', '<=', date_end)])
             payslip_filter_draft = self.env['hr.payslip'].search(
                 [('employee_id', '=', payslip.employee_id.id), ('state', '=', 'draft'), ('date_from', '>=', start_date),
                  ('date_from', '<=', date_end)])
-
-
 
             # Proses data dan buat entri di hr.payslip.line
             for line_data in payslip_filter:  # Gantilah ini dengan metode sesuai kebutuhan Anda
@@ -144,10 +140,6 @@ class HRPayslip(models.Model):
                 sum_bruto_tahunan += pph.pph21_bulanan
                 x.pph21_tahunan = sum_bruto_tahunan
 
-
-
-
-    #@api.multi
     def compute_sheet(self):
         # Call the original compute_sheet method from the parent class
         super(HRPayslip, self).compute_sheet()
@@ -167,9 +159,6 @@ class HRPayslip(models.Model):
         super(HRPayslip, self).compute_sheet()
 
         return True
-
-
-
 
 class HRPayslipLinesBrutoPph(models.Model):
     _name = 'hr.payslip.line.bruto.pph'
