@@ -10,11 +10,6 @@
             <field name="name">GrossPph</field>
             <field name="code">GrossPph</field>
         </record>
-        
-        <record id="SALARY_STRUCTURE_NEW_PPH" model="hr.payroll.structure">
-            <field name="name">Salary Structure New PPH</field>
-            <field name="code">SALARY_STRUCTURE_NEW_PPH</field>
-        </record>
 
         <!--TOTAL PENDAPATAN BRUTO Sebelum Pph-->
         <record id="hr_rule_bruto_sebelum_pph" model="hr.salary.rule">
@@ -22,11 +17,10 @@
             <field name="sequence" eval="31"/>
             <field name="code">BRUTO58</field>
             <field name="category_id" ref="GROSSPPH"/>
-            <field name="struct_id" ref="SALARY_STRUCTURE_NEW_PPH"/>
             <field name="appears_on_payslip">False</field>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result = categories['BASIC'] + categories['ALW']</field>
+            <field name="amount_python_compute">result = categories.BASIC + categories.ALW</field>
         </record>
 
         <!--Biaya Jabatan-->
@@ -35,7 +29,6 @@
             <field name="sequence" eval="42"/>
             <field name="code">BJ58</field>
             <field name="category_id" ref="TAX"/>
-            <field name="struct_id" ref="SALARY_STRUCTURE_NEW_PPH"/>
             <field name="appears_on_payslip">False</field>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
@@ -54,7 +47,6 @@ else :
             <field name="sequence" eval="43"/>
             <field name="code">PTKP58</field>
             <field name="category_id" ref="TAX"/>
-            <field name="struct_id" ref="SALARY_STRUCTURE_NEW_PPH"/>
             <field name="appears_on_payslip">False</field>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
@@ -62,33 +54,33 @@ else :
 StatusPajak = employee.status_sipil
 
 if StatusPajak == "TK/0" :
-	categories['PTKP58'] =  54000000
+	categories.PTKP58 =  54000000
 
 elif StatusPajak == "TK/1" :
-	categories['PTKP58'] =  58500000
+	categories.PTKP58 =  58500000
 
 elif StatusPajak == "TK/2" :
-	categories['PTKP58'] =  63000000
+	categories.PTKP58 =  63000000
 
 elif StatusPajak == "TK/3" :
-	categories['PTKP58'] =  67500000
+	categories.PTKP58 =  67500000
 
 elif StatusPajak == "K/0" :
-	categories['PTKP58'] =  58500000
+	categories.PTKP58 =  58500000
 
 elif StatusPajak == "K/1" :
-	categories['PTKP58'] =  63000000
+	categories.PTKP58 =  63000000
 
 elif StatusPajak == "K/2" :
-	categories['PTKP58'] =  67500000
+	categories.PTKP58 =  67500000
 
 elif StatusPajak == "K/3" :
-	categories['PTKP58'] =  72000000
+	categories.PTKP58 =  72000000
 
 else :
-	categories['PTKP58'] =  0
+	categories.PTKP58 =  0
 
-result = categories['PTKP58']
+result = categories.PTKP58
             </field>
         </record>
 
@@ -98,11 +90,10 @@ result = categories['PTKP58']
             <field name="sequence" eval="44"/>
             <field name="code">PKP58</field>
             <field name="category_id" ref="TAX"/>
-            <field name="struct_id" ref="SALARY_STRUCTURE_NEW_PPH"/>
             <field name="appears_on_payslip">False</field>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
-            <field name="amount_python_compute">result =  payslip.pendapatan_bruto_tahunan - categories['BJ58'] - categories['PTKP58']</field>
+            <field name="amount_python_compute">result =  payslip.pendapatan_bruto_tahunan - categories.BJ58 - categories.PTKP58</field>
         </record>
 
         <!--Pph21 Setahun-->
@@ -111,7 +102,6 @@ result = categories['PTKP58']
             <field name="sequence" eval="45"/>
             <field name="code">PPH58</field>
             <field name="category_id" ref="TAX"/>
-            <field name="struct_id" ref="SALARY_STRUCTURE_NEW_PPH"/>
             <field name="appears_on_payslip">False</field>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
@@ -122,58 +112,58 @@ else :
     p = [5,15,25,30,35]
 
 if payslip.tunjangan_pajak == "grossup" :
- if categories['PKP58'] &lt;= 57000000 and categories['PKP58'] &gt; 0 :
-    PPH58 = (categories['PKP58'] * p[0] / 95)
+ if categories.PKPP58 &lt;= 57000000 and categories.PKPP58 &gt; 0 :
+    PPH58 = (categories.PKPP58 * p[0] / 95)
 
- elif categories['PKP58'] &gt; 57000001 and categories['PKP58'] &lt;= 218500000 :
+ elif categories.PKPP58 &gt; 57000001 and categories.PKPP58 &lt;= 218500000 :
     PPH58 = (57000000 * p[0] / 95)
-    PPH58 = 3000000 + ((categories['PKP58'] - 57000000) * p[1] / 85)
+    PPH58 = 3000000 + ((categories.PKPP58 - 57000000) * p[1] / 85)
 
- elif categories['PKP58'] &gt; 218500001 and categories['PKP58'] &lt;= 406000000 :
+ elif categories.PKPP58 &gt; 218500001 and categories.PKPP58 &lt;= 406000000 :
     PPH58 = (57000000 * p[0] / 95)
-    PPH58 = 3000000 + ((categories['PKP58'] - 57000000) * p[1] / 85)
-    PPH58 = 31500000 + ((categories['PKP58'] - 218500000) * p[2] / 75)
+    PPH58 = 3000000 + ((categories.PKPP58 - 57000000) * p[1] / 85)
+    PPH58 = 31500000 + ((categories.PKPP58 - 218500000) * p[2] / 75)
 
- elif categories['PKP58'] &gt; 406000001 and categories['PKP58'] &lt;= 3556000000 :
+ elif categories.PKPP58 &gt; 406000001 and categories.PKPP58 &lt;= 3556000000 :
     PPH58 = (57000000 * p[0] / 95)
-    PPH58 = 3000000 + ((categories['PKP58'] - 57000000) * p[1] / 85)
-    PPH58 = 31500000 + ((categories['PKP58'] - 218500000) * p[2] / 75)
-    PPH58 = 94000000 + ((categories['PKP58'] - 406000000) * p[3] / 70)
+    PPH58 = 3000000 + ((categories.PKPP58 - 57000000) * p[1] / 85)
+    PPH58 = 31500000 + ((categories.PKPP58 - 218500000) * p[2] / 75)
+    PPH58 = 94000000 + ((categories.PKPP58 - 406000000) * p[3] / 70)
 
- elif categories['PKP58'] &gt; 3556000001 :
+ elif categories.PKPP58 &gt; 3556000001 :
     PPH58 = (57000000 * p[0] / 95)
-    PPH58 = 3000000 + ((categories['PKP58'] - 57000000) * p[1] / 85)
-    PPH58 = 31500000 + ((categories['PKP58'] - 218500000) * p[2] / 75)
-    PPH58 = 94000000 + ((categories['PKP58'] - 406000000) * p[3] / 70)
-    PPH58 = 1444000000 + ((categories['PKP58'] - 3556000000) * p[4] / 65)
+    PPH58 = 3000000 + ((categories.PKPP58 - 57000000) * p[1] / 85)
+    PPH58 = 31500000 + ((categories.PKPP58 - 218500000) * p[2] / 75)
+    PPH58 = 94000000 + ((categories.PKPP58 - 406000000) * p[3] / 70)
+    PPH58 = 1444000000 + ((categories.PKPP58 - 3556000000) * p[4] / 65)
 
  else :
     PPH58 = 0
 else :
- if categories['PKP58'] &lt;= 60000000 and categories['PKP58'] &gt; 0 :
-     PPH58 = (categories['PKP58'] * p[0] / 100)
+ if categories.PKP58 &lt;= 60000000 and categories.PKPP58 &gt; 0 :
+     PPH58 = (categories.PKPP58 * p[0] / 100)
 
- elif categories['PKP58'] &gt; 60000000 and categories['PKP58'] &lt;= 250000000 :
+ elif categories.PKP58 &gt; 60000000 and categories.PKPP58 &lt;= 250000000 :
         PPH58 = (60000000 * p[0] / 100)
-        PPH58 = PPH58 + ((categories['PKP58'] - 60000000) * p[1] / 100)
+        PPH58 = PPH58 + ((categories.PKPP58 - 60000000) * p[1] / 100)
 
- elif categories['PKP58'] &gt; 250000000 and categories['PKP58'] &lt;= 600000000 :
+ elif categories.PKP58 &gt; 250000000 and categories.PKPP58 &lt;= 600000000 :
        PPH58 = (60000000 * p[0] / 100)
-       PPH58 = PPH58 + ((categories['PKP58'] - 60000000) * p[1] / 100)
-       PPH58 = PPH58 + ((categories['PKP58'] - 250000000) * p[2] / 100)
+       PPH58 = PPH58 + ((categories.PKPP58 - 60000000) * p[1] / 100)
+       PPH58 = PPH58 + ((categories.PKPP58 - 250000000) * p[2] / 100)
 
- elif categories['PKP58'] &gt; 500000000 and categories['PKP58'] &lt;= 5000000000  :
+ elif categories.PKP58 &gt; 500000000 and categories.PKPP58 &lt;= 5000000000  :
        PPH58 = (60000000 * p[0] / 100)
-       PPH58 = PPH58 + ((categories['PKP58'] - 60000000) * p[1] / 100)
-       PPH58 = PPH58 + ((categories['PKP58'] - 250000000) * p[2] / 100)
-       PPH58 = PPH58 + ((categories['PKP58'] - 500000000) * p[3] / 100)
+       PPH58 = PPH58 + ((categories.PKPP58 - 60000000) * p[1] / 100)
+       PPH58 = PPH58 + ((categories.PKPP58 - 250000000) * p[2] / 100)
+       PPH58 = PPH58 + ((categories.PKPP58 - 500000000) * p[3] / 100)
 
- elif categories['PKP58'] &gt; 5000000000 :
+ elif categories.PKP58 &gt; 5000000000 :
        PPH58 = (60000000 * p[0] / 100)
-       PPH58 = PPH58 + ((categories['PKP58'] - 60000000) * p[1] / 100)
-       PPH58 = PPH58 + ((categories['PKP58'] - 250000000) * p[2] / 100)
-       PPH58 = PPH58 + ((categories['PKP58'] - 500000000) * p[3] / 100)
-       PPH58 = PPH58 + ((categories['PKP58'] - 5000000000) * p[4] / 100)
+       PPH58 = PPH58 + ((categories.PKPP58 - 60000000) * p[1] / 100)
+       PPH58 = PPH58 + ((categories.PKPP58 - 250000000) * p[2] / 100)
+       PPH58 = PPH58 + ((categories.PKPP58 - 500000000) * p[3] / 100)
+       PPH58 = PPH58 + ((categories.PKPP58) * p[4] / 100)
  else :
       PPH58 = 0
 
@@ -187,7 +177,6 @@ result = PPH58
             <field name="sequence" eval="46"/>
             <field name="code">TJPJK58</field>
             <field name="category_id" ref="TAX"/>
-            <field name="struct_id" ref="SALARY_STRUCTURE_NEW_PPH"/>
             <field name="appears_on_payslip">True</field>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
@@ -196,7 +185,7 @@ if payslip.tunjangan_pajak == "gross":
     result = 0
 else:
     if payslip.is_tahunan == True:
-      result = categories['PPH58'] - payslip.pph21_tahunan
+      result = categories.PPH58 - payslip.pph21_tahunan
     else :
       result = payslip.pph21_bulanan
             </field>
@@ -208,7 +197,6 @@ else:
             <field name="sequence" eval="61"/>
             <field name="code">PPPH58</field>
             <field name="category_id" ref="TAX"/>
-            <field name="struct_id" ref="SALARY_STRUCTURE_NEW_PPH"/>
             <field name="appears_on_payslip">True</field>
             <field name="condition_select">none</field>
             <field name="amount_select">code</field>
@@ -217,15 +205,31 @@ metode = payslip.tunjangan_pajak
 
 if metode == "grossup":
   if payslip.is_tahunan == True :
-    result = categories['TJPJK58']
+    result = categories.TJPJK58
   else :
     result = payslip.pph21_bulanan
 else :
   if payslip.is_tahunan == True :
-    result = categories['PPH58'] - payslip.pph21_tahunan
+    result = categories.PPH58 - payslip.pph21_tahunan
   else :
     result = payslip.pph21_bulanan
             </field>
+        </record>
+
+        <record id="SALARY_STRUCTURE_NEW_PPH" model="hr.payroll.structure">
+            <field name="name">Salary Structure New PPH</field>
+            <field name="code">SALARY_STRUCTURE_NEW_PPH</field>
+            <field name="rule_ids" eval="[
+                (6, 0, [
+                    ref('hr_rule_bruto_sebelum_pph'),
+                    ref('hr_rule_biaya_jabatan'),
+                    ref('hr_rule_ptkp'),
+                    ref('hr_rule_pph21_bulanan'),
+                    ref('hr_rule_pph21_setahun'),
+                    ref('hr_rule_tj_pajak'),
+                    ref('hr_rule_pot_pph')
+                ])
+            ]"/>
         </record>
     </data>
 </odoo>
