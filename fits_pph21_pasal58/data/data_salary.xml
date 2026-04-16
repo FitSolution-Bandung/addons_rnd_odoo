@@ -53,34 +53,24 @@ else :
             <field name="amount_python_compute">
 StatusPajak = employee.status_sipil
 
-if StatusPajak == "TK/0" :
-	categories.PTKP58 =  54000000
-
-elif StatusPajak == "TK/1" :
-	categories.PTKP58 =  58500000
-
-elif StatusPajak == "TK/2" :
-	categories.PTKP58 =  63000000
-
-elif StatusPajak == "TK/3" :
-	categories.PTKP58 =  67500000
-
-elif StatusPajak == "K/0" :
-	categories.PTKP58 =  58500000
-
-elif StatusPajak == "K/1" :
-	categories.PTKP58 =  63000000
-
-elif StatusPajak == "K/2" :
-	categories.PTKP58 =  67500000
-
-elif StatusPajak == "K/3" :
-	categories.PTKP58 =  72000000
-
-else :
-	categories.PTKP58 =  0
-
-result = categories.PTKP58
+if StatusPajak == "TK/0":
+    result = 54000000
+elif StatusPajak == "TK/1":
+    result = 58500000
+elif StatusPajak == "TK/2":
+    result = 63000000
+elif StatusPajak == "TK/3":
+    result = 67500000
+elif StatusPajak == "K/0":
+    result = 58500000
+elif StatusPajak == "K/1":
+    result = 63000000
+elif StatusPajak == "K/2":
+    result = 67500000
+elif StatusPajak == "K/3":
+    result = 72000000
+else:
+    result = 0
             </field>
         </record>
 
