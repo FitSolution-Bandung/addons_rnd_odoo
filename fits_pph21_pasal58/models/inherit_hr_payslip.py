@@ -7,15 +7,16 @@ class HRPayslipRun(models.Model):
 
     is_tahunan = fields.Boolean(string='Payslip Tahunan', default=False)
 
+
 class HRPayslip(models.Model):
     _inherit = 'hr.payslip'
 
     pendapatan_bruto_tahunan = fields.Float(string="Bruto Tahunan", readonly=True)
     pendapatan_bruto_bulanan = fields.Float(string='Bruto Bulanan', readonly=True)
-    pph21_bulanan = fields.Float(string="Pph21 Bulanan", readonly=True)
-    pph21_tahunan = fields.Float(string="Pph21 Tahunan", readonly=True)
+    pph21_bulanan = fields.Float(string='Pph21 Bulanan', readonly=True)
+    pph21_tahunan = fields.Float(string='Pph21 Tahunan', readonly=True)
     is_tahunan = fields.Boolean(string="Payslip Tahunan", related='payslip_run_id.is_tahunan', readonly=False, store=True)
-    tunjangan_pajak = fields.Selection([('gross', 'Gross'), ('grossup', 'GrossUp')], related='contract_id.tunjangan_pajak', readonly=False, string="Metode Pajak", required=True)
+    tunjangan_pajak = fields.Selection([('gross', 'Gross'), ('grossup', 'GrossUp')], related='contract_id.tunjangan_pajak', readonly=False, string="Metode Pajak", default='gross')
     bruto_pph_ids = fields.One2many('hr.payslip.line.bruto.pph', 'payslip_id', string='Payslip')
 
     def delete_generate_payslip_lines_bruto_pph(self):
@@ -34,9 +35,8 @@ class HRPayslip(models.Model):
 
             # Delete existing hr.payslip.line.bruto.pph records if is_tahunan is False
 
-
             payslip_filter = self.env['hr.payslip'].search(
-                [('employee_id', '=', payslip.employee_id.id),('state', '=', 'done'),('date_from', '>=', start_date),
+                [('employee_id', '=', payslip.employee_id.id), ('state', '=', 'done'), ('date_from', '>=', start_date),
                  ('date_from', '<=', date_end)])
             payslip_filter_draft = self.env['hr.payslip'].search(
                 [('employee_id', '=', payslip.employee_id.id), ('state', '=', 'draft'), ('date_from', '>=', start_date),
@@ -122,9 +122,7 @@ class HRPayslip(models.Model):
             start_date = (date).strftime('%Y-01-01')
             end_date = fields.Date.from_string(start_date)
             date_end = (end_date + relativedelta(months=+12, day=1, days=-1)).strftime('%Y-%m-%d')
-            print('==================date===============', start_date, date_end)
             bruto_tahunan = self.env['hr.payslip'].search([('employee_id', '=', x.employee_id.id),('state', '=', 'done'),('date_from', '>=', start_date),('date_from', '<=', date_end)])
-            print('===================payslip=================', bruto_tahunan)
             sum_bruto_tahunan = 0
             for bt in bruto_tahunan:
                 sum_bruto_tahunan += bt.pendapatan_bruto_bulanan
@@ -136,9 +134,7 @@ class HRPayslip(models.Model):
             start_date = (date).strftime('%Y-01-01')
             end_date = fields.Date.from_string(start_date)
             date_end = (end_date + relativedelta(months=+11, day=1, days=-1)).strftime('%Y-%m-%d')
-            print('==================date===============', start_date, date_end)
             pph_tahunan = self.env['hr.payslip'].search([('employee_id', '=', x.employee_id.id),('state', '=', 'done'),('date_from', '>=', start_date),('date_from', '<=', date_end)])
-            print('===================payslip=================', pph_tahunan)
             sum_bruto_tahunan = 0
             for pph in pph_tahunan:
                 sum_bruto_tahunan += pph.pph21_bulanan
@@ -146,25 +142,21 @@ class HRPayslip(models.Model):
 
 
 
-
-    @api.multi
     def compute_sheet(self):
         # Call the original compute_sheet method from the parent class
-        super(HRPayslip, self).compute_sheet()
+        super().compute_sheet()
 
         # Add your custom logic here
         for payslip in self:
             payslip._compute_pendapatan_bruto()
-            if payslip.is_tahunan == True :
+            if payslip.is_tahunan:
                 payslip.get_bruto_tahunan()
                 payslip.get_pph_tahunan()
                 payslip.generate_payslip_lines_bruto_pph()
-            else :
+            else:
                 payslip.pendapatan_bruto_tahunan = 0
                 payslip.pph21_tahunan = 0
                 payslip.delete_generate_payslip_lines_bruto_pph()
-            # Call compute_sheet again after your custom logic
-        super(HRPayslip, self).compute_sheet()
 
         return True
 
@@ -174,7 +166,7 @@ class HRPayslip(models.Model):
 class HRPayslipLinesBrutoPph(models.Model):
     _name = 'hr.payslip.line.bruto.pph'
 
-    payslip_id = fields.Many2one('hr.payslip',string="Payslip ID")
+    payslip_id = fields.Many2one('hr.payslip', string="Payslip ID")
     ref = fields.Char(string="Reference", readonly=True)
     date_from = fields.Char(string="Date From", readonly=True)
     date_to = fields.Char(string="Date To ", readonly=True)
@@ -182,5 +174,3 @@ class HRPayslipLinesBrutoPph(models.Model):
     bruto_bulanan = fields.Float(string='Bruto Bulanan', readonly=True)
     pph21_bulanan = fields.Float(string="Pph21 Bulanan", readonly=True)
     status = fields.Char(string="Status", readonly=True)
-
-
