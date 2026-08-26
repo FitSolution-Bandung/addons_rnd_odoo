@@ -3,9 +3,6 @@ from odoo import models, fields, api, _
 
 
 class HRContract(models.Model):
-    _inherit = 'hr.contract'
+    _inherit = 'hr.version'
 
-    tunjangan_pajak = fields.Selection([('gross', 'Gross'), ('grossup', 'GrossUp')], string="Metode Pajak",required=True)
-
-
-
+    tunjangan_pajak = fields.Selection([('gross', 'Gross'), ('grossup', 'GrossUp')], string="Metode Pajak", default='gross')

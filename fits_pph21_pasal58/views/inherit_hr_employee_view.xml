@@ -1,17 +1,18 @@
-<openerp>
+<odoo>
     <data>
         <record id="view_inherit_hr_employee_form" model="ir.ui.view">
             <field name="name">inherit.hr.employee.form</field>
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="priority" eval="99"/>
             <field name="arch" type="xml">
-                <field name="gender" position="after">
-                    <field name="status_sipil"/>
-                </field>
-                <field name="identification_id" position="after">
-                    <field name="no_npwp"/>
-                </field>
+                <xpath expr="//page[@name='personal_information']" position="inside">
+                    <group string="Informasi Pajak">
+                        <field name="status_sipil"/>
+                        <field name="no_npwp"/>
+                    </group>
+                </xpath>
             </field>
         </record>
     </data>
-</openerp>
+</odoo>
