@@ -165,6 +165,7 @@ class HRPayslip(models.Model):
 
 class HRPayslipLinesBrutoPph(models.Model):
     _name = 'hr.payslip.line.bruto.pph'
+    _description = 'HR Payslip Line Bruto PPh'
 
     payslip_id = fields.Many2one('hr.payslip', string="Payslip ID")
     ref = fields.Char(string="Reference", readonly=True)
