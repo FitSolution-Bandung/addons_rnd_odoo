@@ -3,20 +3,24 @@
         <record id="view_inherit_hr_payslip_form" model="ir.ui.view">
             <field name="name">inherit.hr.payslip.form</field>
             <field name="model">hr.payslip</field>
-            <field name="inherit_id" ref="payroll.hr_payslip_view_form"/>
+            <field name="inherit_id" ref="om_hr_payroll.view_hr_payslip_form"/>
             <field name="arch" type="xml">
-                <field name="name" position="after">
-                    <field name="pph21_tahunan"/>
-                    <field name="pendapatan_bruto_tahunan"/>
-                    <field name="pph21_bulanan"/>
-                    <field name="pendapatan_bruto_bulanan"/>
-                    <field name="is_tahunan"/>
-                    <field name="tunjangan_pajak"/>
-                </field>
-                <xpath expr="//sheet/notebook" position="inside">
+                <xpath expr="//sheet/group[@col='4']" position="inside">
+                        <div class="row">
+                                <group string="PPh21">
+                                    <field name="is_tahunan"/>
+                                    <field name="pendapatan_bruto_bulanan"/>
+                                    <field name="pendapatan_bruto_tahunan"/>
+                                    <field name="pph21_bulanan"/>
+                                    <field name="pph21_tahunan"/>
+                                    <field name="tunjangan_pajak"/>
+                                </group>
+                        </div>
+                </xpath>
+                <xpath expr="//sheet/notebook/page[3]" position="after">
                     <page string="Kalkulasi Nilai Tahunan">
-                        <group>
-                            <field name="bruto_pph_ids" nolabel="1">
+                       <separator string="Kalkulasi Nilai Tahunan"/>
+                            <field name="bruto_pph_ids" colspan="4" nolabel="1" readonly="1">
                                 <list string="Kalkulasi Nilai Tahunan">
                                     <field name="ref"/>
                                     <field name="payslip_name"/>
@@ -27,7 +31,6 @@
                                     <field name="status"/>
                                 </list>
                             </field>
-                        </group>
                     </page>
                 </xpath>
             </field>
@@ -35,11 +38,11 @@
         <record id="view_inherit_hr_payslip_run_form" model="ir.ui.view">
             <field name="name">inherit.hr.payslip.run.form</field>
             <field name="model">hr.payslip.run</field>
-            <field name="inherit_id" ref="payroll.hr_payslip_run_view_form"/>
+            <field name="inherit_id" ref="om_hr_payroll.hr_payslip_run_form"/>
             <field name="arch" type="xml">
-                <field name="credit_note" position="before">
+                <xpath expr="//field[@name='date_start']" position="after">
                     <field name="is_tahunan"/>
-                </field>
+                </xpath>
             </field>
         </record>
     </data>

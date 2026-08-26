@@ -16,7 +16,7 @@ class HRPayslip(models.Model):
     pph21_bulanan = fields.Float(string='Pph21 Bulanan', readonly=True)
     pph21_tahunan = fields.Float(string='Pph21 Tahunan', readonly=True)
     is_tahunan = fields.Boolean(string="Payslip Tahunan", related='payslip_run_id.is_tahunan', readonly=False, store=True)
-    tunjangan_pajak = fields.Selection([('gross', 'Gross'), ('grossup', 'GrossUp')], related='contract_id.tunjangan_pajak', readonly=False, string="Metode Pajak", default='gross')
+    tunjangan_pajak = fields.Selection([('gross', 'Gross'), ('grossup', 'GrossUp')], related='version_id.tunjangan_pajak', readonly=False, string="Metode Pajak", default='gross')
     bruto_pph_ids = fields.One2many('hr.payslip.line.bruto.pph', 'payslip_id', string='Payslip')
 
     def delete_generate_payslip_lines_bruto_pph(self):

@@ -50,6 +50,6 @@
             <field name="view_mode">list,form</field>
         </record>
         <menuitem action="payslip_kategori_ter_view" id="menu_payslip_kategori_ter_view"
-                  parent="payroll.payroll_menu_configuration" sequence="20"/>
+                  parent="om_hr_payroll.menu_hr_payroll_configuration" sequence="20"/>
     </data>
 </odoo>
